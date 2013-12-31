@@ -1,0 +1,103 @@
+#!/bin/sh
+
+type=""
+device_type=""
+check=n
+mode=tftp
+
+. /env/config
+
+while getopt "ht:d:f:m:c" Option
+do
+if [ ${Option} = t ]; then
+	type=${OPTARG}
+elif [ ${Option} = d ]; then
+	device_type=${OPTARG}
+elif [ ${Option} = f ]; then
+	imagename=${OPTARG}
+elif [ ${Option} = c ]; then
+	check=y
+elif [ ${Option} = m ]; then
+	mode=${OPTARG}
+else
+	. /env/bin/_update_help
+	exit 0
+fi
+done
+
+if [ x${type} = xkernel ]; then
+	image=$kernelimage
+	eccmode=${kernel_eccmode}
+	disk_part=$kernel_part
+elif [ x${type} = xrootfs ]; then
+	image=$rootfsimage
+	type=root
+	eccmode=${root_eccmode}
+elif [ x${type} = xbarebox ]; then
+	image=$bareboximage
+	if [ -z ${image} ]; then
+		image=barebox.bin
+	fi
+	eccmode=${barebox_eccmode}
+elif [ x${type} = xoftree ]; then
+	image=$oftreeimage
+	if [ -z ${image} ]; then
+		image=oftree.bin
+	fi
+elif [ x${type} = xbareboxenv ]; then
+	image=$bareboxenvimage
+	if [ -z ${image} ]; then
+		image=bareboxenv.bin
+	fi
+	eccmode=${bareboxenv_eccmode}
+elif [ x${type} = xxload ]; then
+	image=$xloadimage
+	eccmode=${xload_eccmode}
+elif [ x${type} = xsplash ]; then
+	image=$splashimage
+	eccmode=${barebox_eccmode}
+else
+	. /env/bin/_update_help
+	exit 1
+fi
+
+if [ -n ${imagename} ]; then
+	image=${imagename}
+fi
+
+if [ x${device_type} = xnand ]; then
+	part=/dev/nand0.${type}.bb
+	if [ x${eccmode} != x ] && [ x${eccdev} != x ]; then
+		${eccdev}.eccmode=${eccmode}
+	fi
+elif [ x${device_type} = xnor ]; then
+	part=/dev/nor0.${type}
+elif [ x${device_type} = xdisk ]; then
+	part=/dev/${disk_part}
+else
+	. /env/bin/_update_help
+	exit 1
+fi
+
+if [ x${mode} != xtftp -a x${mode} != xxmodem -a x${mode} != xnfs ]; then
+	echo "unsupported mode ${mode}."
+	. /env/bin/_update_help
+	exit 1
+fi
+
+. /env/bin/_update || exit 1
+
+if [ x${check} = xy ]; then
+	crc32 -f $image -F $part
+else
+	true
+fi
+#save crc32 returnvalue to provide it to at end of script
+retval=$?
+
+#Set bareboxenv_eccmode for proper savenv
+if [ x${bareboxenv_eccmode} != x ] && [ x${eccdev} != x ]; then
+	${eccdev}.eccmode=${bareboxenv_eccmode}
+fi
+
+exit $retval

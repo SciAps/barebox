@@ -1,0 +1,6 @@
+
+config CLKDEV_LOOKUP
+	bool
+
+config COMMON_CLK
+	bool
