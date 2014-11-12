@@ -20,5 +20,8 @@ if [ -e /dev/fb0 ]; then
 	fb0.enable=1
 fi
 
-global.displayargs="panel_generic_dpi.name=$display"
-
+if [ $display = "nhd43480272ef-atxl" ]; then
+	global.displayargs="panel_generic_dpi.name=$display omapfb.fb_opt=-1,-1,-1,1,480,272"
+else
+	global.displayargs="panel_generic_dpi.name=$display omapfb.fb_opt=-1,-1,-1,1,800,480"
+fi

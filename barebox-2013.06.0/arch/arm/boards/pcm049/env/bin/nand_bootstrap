@@ -10,8 +10,8 @@ if [ $? != 0 ]; then
 	exit 1
 fi
 
-if [ ! -f /mnt/mlo-nand.bin ]; then
-	echo "mlo-nand.bin not found on mmc card"
+if [ ! -f /mnt/MLO ]; then
+	echo "MLO not found on mmc card"
 	exit 1
 fi
 
@@ -21,11 +21,11 @@ fi
 
 gpmc_nand0.eccmode=bch8_hw_romcode
 erase /dev/nand0.xload.bb
-cp /mnt/mlo-nand.bin /dev/nand0.xload.bb
+cp /mnt/MLO /dev/nand0.xload.bb
 
 gpmc_nand0.eccmode=bch8_hw
 erase /dev/nand0.barebox.bb
 cp /mnt/barebox.bin /dev/nand0.barebox.bb
 
 echo "success"
-
+exit 0

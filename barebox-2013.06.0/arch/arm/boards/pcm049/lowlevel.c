@@ -183,7 +183,8 @@ static void noinline pcm049_init_lowlevel(void)
 	omap4_ddr_init(&ddr_regs_mt42L64M64_25_400_mhz, &core);
 	writel(EMIF_SDRAM_CONFIG, OMAP44XX_EMIF1_BASE + EMIF_LPDDR2_MODE_REG_CONFIG);
 	
-	density = (readl(OMAP44XX_EMIF1_BASE + EMIF_LPDDR2_MODE_REG_DATA) & LPDDR2_DENSITY_MASK) >> LPDDR2_DENSITY_SHIFT; 
+	density = (readl(OMAP44XX_EMIF1_BASE + EMIF_LPDDR2_MODE_REG_DATA)
+			& LPDDR2_DENSITY_MASK) >> LPDDR2_DENSITY_SHIFT; 
 
 #ifdef CONFIG_1024MB_DDR2RAM
 	if (density == LPDDR2_2G) {

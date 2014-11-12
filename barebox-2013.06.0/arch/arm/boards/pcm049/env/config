@@ -38,24 +38,16 @@ fi
 
 autoboot_timeout=3
 
-bootargs="console=ttyO2,115200"
-
 # Android kernel requirements
 bootargs="$bootargs init=/init vram=64M omapfb.vram=0:32M"
 
-nand_parts="128k(xload)ro,512k(barebox),128k(bareboxenv),4M(kernel),4M(splash),-(root)"
+nand_parts="128k(xload)ro,512k(barebox),128k(bareboxenv),6M(kernel),4M(splash),-(root)"
 nand_device="omap2-nand.0"
 rootfs_mtdblock_nand=5
 
-#Displays
-# Splashscreen-Display can be either '', 'pd050vl1', 'pm070wl4', 'pd104slf', 'g104x1'
-# 'edt_etm0350G0dh6', 'edt_etm0430G0dh6', 'edt_etmv570G2dhu' or 'edt_etm0700G0dh6'
-# to use dvi output in kernel set 'display=dvi' and
-# dvi_resolution to '640x480-60' '800x600-60' or '1024x768-60'
-
+#Display
 display=nhd50800480tf-atxl
-#display=edt_etm0700G0dh6
-#dvi_resolution=1024x768-60
+#display=nhd43480272ef-atxl
 
 if [ -n ${global.displayargs} ]; then
 	bootargs="$bootargs ${global.displayargs}"
