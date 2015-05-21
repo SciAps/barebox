@@ -113,7 +113,7 @@ static const struct pad_conf_entry core_padconf_array[] = {
 	{ABE_DMIC_CLK1, (SAFE_MODE)},					/* nc */
 	{ABE_DMIC_DIN1, (SAFE_MODE)},					/* unused */
 	{ABE_DMIC_DIN2, (DIS | IEN | M3)},				/* gpio_121 */
-	{ABE_DMIC_DIN3, (M3)},						/* gpio_122 */
+	{ABE_DMIC_DIN3, (PTD | M3)},					/* gpio_122 */
 	{UART2_CTS, (SAFE_MODE)},					/* unused */
 	{UART2_RTS, (SAFE_MODE)},					/* unused */
 	{UART2_RX, (SAFE_MODE)},					/* unused */
@@ -164,7 +164,7 @@ static const struct pad_conf_entry core_padconf_array[] = {
 	{USBB2_ULPITLL_DAT7, (M5)},					/* dispc2_data11 */
 	{USBB2_HSIC_DATA, (SAFE_MODE)},					/* nc */
 	{USBB2_HSIC_STROBE, (SAFE_MODE)},				/* nc */
-	{UNIPRO_TX0, (SAFE_MODE)},					/* unused */
+	{UNIPRO_TX0, (PTD | M3)},					/* gpio_171 */
 	{UNIPRO_TY0, (SAFE_MODE)},					/* unused */
 	{UNIPRO_TX1, (SAFE_MODE)},					/* unused */
 	{UNIPRO_TY1, (SAFE_MODE)},					/* unused */
